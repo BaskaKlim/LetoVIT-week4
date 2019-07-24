@@ -8,6 +8,9 @@ class AddTodo extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        this.props.onAdd(this.state)
+        this.setState({title: '',
+        text: ''})
     };
     handleChange = event => {
         const { value, name } = event.target;
@@ -19,9 +22,9 @@ class AddTodo extends Component {
     render() {
         const { title, text } = this.state;
         return (
-            <form onSubmit={this.handleSubmit} className="mb-2">
+            <form onSubmit={this.handleSubmit} className="mb-2" style={{ paddingLeft: "130px", paddingRight:"130px" }}>
                 <input
-                    className="form-control mb-2"
+                    className="form-control mb-2" 
                     type="text"
                     value={title}
                     name="title"

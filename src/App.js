@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Todo from './Todo';
-import AddTodo from  './AddTodo';
-
+import AddTodo from './AddTodo';
+import moment from "moment";
 
 
 
@@ -41,7 +41,20 @@ class App extends Component {
       }
 
     ]
-  }
+  };
+
+  // funkcia ktora mi vytvori novy todo = teda drzi obsah
+  addTodo = todo => {
+    const newTodo = {
+      ...todo,
+      createdAt: moment().format('DD.MM.YYYY'),
+      finished: false
+    };
+    this.setState(prevState => ({
+      todos: prevState.todos.concat(newTodo)
+
+    }))
+  };
 
 
   render() {
@@ -49,7 +62,8 @@ class App extends Component {
     return (
       <div className="App p-3">
         {/* pridat vyrenderovanie noveho komponentu AddTodo */}
-        <AddTodo/>
+        {/* do komponentu si musim pridat aj funkciu addTodo */}
+        <AddTodo onAdd={this.addTodo} />
         {todos.map(todoData => {
           return (
             <Todo todo={todoData} />
@@ -58,6 +72,7 @@ class App extends Component {
       </div>
 
     );
+
   }
 }
 

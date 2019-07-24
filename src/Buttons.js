@@ -15,7 +15,7 @@ class Buttons extends Component {
 
         return (
             <>
-                <button type="button" class="btn btn-outline-danger float-left">Zmazat</button>
+                <button type="button" class="btn btn-outline-danger  float-left">Zmazat</button>
                 {finishedButton}
             </>
         );
