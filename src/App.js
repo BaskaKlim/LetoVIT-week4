@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import Todo from './Todo';
+import AddTodo from  './AddTodo';
+
+
+
 
 class App extends Component {
   state = {
@@ -28,6 +32,7 @@ class App extends Component {
         title: 'Zaverecny projekt',
         createdAt: '28.08.2019',
         finished: false,
+        // ak by som to chcela dat spravne tak si tu dam list a taham to cez array stringov a cez map, po spravnosti si spravit novy komponent list
         text: `<ul class="list-group list-group-flush">
         <li class="list-group-item">Learn2Code kurz</li>
         <li class="list-group-item">Vypracuj Petove cvicenia</li>
@@ -43,6 +48,8 @@ class App extends Component {
     const todos = this.state.todos;
     return (
       <div className="App p-3">
+        {/* pridat vyrenderovanie noveho komponentu AddTodo */}
+        <AddTodo/>
         {todos.map(todoData => {
           return (
             <Todo todo={todoData} />
