@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
+import axios from './axios';
+
 
 
 class Buttons extends Component {
+// patchli tomu buttonu sme pridalil funkciu ze v databaze updatne polozku na ktoru si klikla a priradi true
+// toto sme dali prec  handleFinish = async () => {
+    // await axios.patch('/todos' + this.props.todo.id + '.json', { finished: true })};
+
 
     render() {
         const { finished } = this.props.todo;
         let finishedButton;
         if (!finished) {
 
-            finishedButton = (<button type="button" class="btn btn-outline-success float-right">Hotovo</button>
+            finishedButton = (<button type="button" className="btn btn-outline-success float-right" onClick={this.props.onFinish}>Dokoncit</button>
             );
         }
 
 
         return (
             <>
-                <button type="button" class="btn btn-outline-danger  float-left">Zmazat</button>
+                <button type="button" className="btn btn-outline-danger  float-left">Zmazat</button>
                 {finishedButton}
             </>
         );

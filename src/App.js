@@ -1,59 +1,59 @@
 import React, { Component } from 'react';
+import moment from "moment";
+import axios from './axios.js';
+
 import Todo from './Todo';
 import AddTodo from './AddTodo';
-import moment from "moment";
-
 
 
 class App extends Component {
   state = {
-    todos: [
-      {
-        title: 'Precvic si JavaScript',
-        createdAt: '23.09.1988',
-        finished: false,
-        text: `<ul class="list-group list-group-flush">
-        <li class="list-group-item">Learn2Code kurz</li>
-        <li class="list-group-item">Vypracuj Petove cvicenia</li>
-        <li class="list-group-item">Domace ulohy z Leto v IT </li>
-      </ul> `
-      },
-      {
-        title: 'Nauc sa React',
-        createdAt: '17.07.2019',
-        finished: true,
-        text: `<ul class="list-group list-group-flush">
-        <li class="list-group-item">Calamada</li>
-        <li class="list-group-item">Civapcici</li>
-        <li class="list-group-item">Cucoriedky </li>
-      </ul> `
-      },
-      {
-        title: 'Zaverecny projekt',
-        createdAt: '28.08.2019',
-        finished: false,
-        // ak by som to chcela dat spravne tak si tu dam list a taham to cez array stringov a cez map, po spravnosti si spravit novy komponent list
-        text: `<ul class="list-group list-group-flush">
-        <li class="list-group-item">Learn2Code kurz</li>
-        <li class="list-group-item">Vypracuj Petove cvicenia</li>
-        <li class="list-group-item">Domace ulohy z Leto v IT </li>
-      </ul> `
-      }
-
-    ]
+    // treba si vymazat todo ktore boli na tvrdo dane lebo nemali id, vedeli by sme k nim pridat ide ale neboli by v databaze  preto treba pole prazne
+    todos: []
   };
 
+  // 
+
+  async componentDidMount() {
+    const todos = await axios.get('/todos.json');
+    console.log(todos)
+    const result = [];
+
+    if (todos.data) Object.keys(todos.data).forEach(key => {
+
+      const todo = todos.data[key];
+      todo.id = key;
+      result.push(todo)
+
+    });
+    this.setState({
+      todos: result
+
+    });
+  }
+
+
   // funkcia ktora mi vytvori novy todo = teda drzi obsah
-  addTodo = todo => {
+  addTodo = async todo => {
     const newTodo = {
       ...todo,
       createdAt: moment().format('DD.MM.YYYY'),
       finished: false
     };
+    const result = await axios.post('/todos.json', newTodo)
+    newTodo.id = result.data.name;
+
     this.setState(prevState => ({
       todos: prevState.todos.concat(newTodo)
 
-    }))
+    }));
+
+  };
+
+  editTodo = (todo, index) => {
+    const todos = [...this.state.todos];
+    todos.splice(index, 1, todo);
+    this.setState({ todos: todos })
   };
 
 
@@ -64,9 +64,15 @@ class App extends Component {
         {/* pridat vyrenderovanie noveho komponentu AddTodo */}
         {/* do komponentu si musim pridat aj funkciu addTodo */}
         <AddTodo onAdd={this.addTodo} />
-        {todos.map(todoData => {
+        {todos.map((todo, index) => {
+      
+          const handleFinishTodo =()=>{
+            todo.finished = true;
+            this.editTodo(todo, index);
+          };
+
           return (
-            <Todo todo={todoData} />
+            <Todo todo={todo} key={todo.id} onFinish={handleFinishTodo} />
           )
         })}
       </div>

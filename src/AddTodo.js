@@ -9,6 +9,7 @@ class AddTodo extends Component {
     handleSubmit = event => {
         event.preventDefault();
         this.props.onAdd(this.state)
+        // resentnutie formularu
         this.setState({title: '',
         text: ''})
     };
