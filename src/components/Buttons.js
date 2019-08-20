@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from './axios';
+
 
 
 
@@ -21,7 +21,7 @@ class Buttons extends Component {
 
         return (
             <>
-                <button type="button" className="btn btn-outline-danger  float-left">Zmazat</button>
+                <button type="button" className="btn btn-outline-danger  float-left" onClick={this.props.onRemove}>Zmazat</button>
                 {finishedButton}
             </>
         );

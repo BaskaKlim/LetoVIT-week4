@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://leto-v-it-week4.firebaseio.com/',
+    baseURL: 'http://localhost:8080',
 }
 );
 

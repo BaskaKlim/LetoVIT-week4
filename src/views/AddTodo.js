@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-
+import { withRouter } from 'react-router-dom';
 class AddTodo extends Component {
     state = {
         title: '',
         text: ''
     };
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
-        this.props.onAdd(this.state)
+      await this.props.onAdd(this.state)
         // resentnutie formularu
-        this.setState({title: '',
-        text: ''})
+        this.setState({
+            title: '',
+            text: ''
+        })
+        this.props.history.push('/');
     };
     handleChange = event => {
         const { value, name } = event.target;
@@ -23,9 +26,9 @@ class AddTodo extends Component {
     render() {
         const { title, text } = this.state;
         return (
-            <form onSubmit={this.handleSubmit} className="mb-2" style={{ paddingLeft: "130px", paddingRight:"130px" }}>
+            <form onSubmit={this.handleSubmit} className="mb-2" style={{ paddingLeft: "130px", paddingRight: "130px" }}>
                 <input
-                    className="form-control mb-2" 
+                    className="form-control mb-2"
                     type="text"
                     value={title}
                     name="title"
@@ -46,4 +49,4 @@ class AddTodo extends Component {
     }
 }
 
-export default AddTodo;
+export default withRouter(AddTodo);

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { HashRouter, Switch, Route } from 'react-router-dom';
 import moment from "moment";
 import axios from './axios.js';
-
-import Todo from './Todo';
-import AddTodo from './AddTodo';
-
+//  todo uz nepotrebujem ale potrebujem importovat todolist import Todo from './Todo';
+import AddTodo from './views/AddTodo';
+import TodoList from './views/TodoList';
+import Navbar from './components/Navbar';
+import findIndex from 'lodash/findIndex';
 
 class App extends Component {
   state = {
@@ -50,12 +52,19 @@ class App extends Component {
 
   };
 
-  editTodo = (todo, index) => {
+  editTodo = todo => {
+    const index = findIndex (this.state.todos, {id: todo.id});
     const todos = [...this.state.todos];
     todos.splice(index, 1, todo);
     this.setState({ todos: todos })
   };
 
+  removeTodo = todo => {
+    const index = findIndex (this.state.todos, {id: todo.id});
+    const todos = [...this.state.todos]
+    todos.splice(index, 1);
+    this.setState({ todos: todos });
+  };
 
   render() {
     const todos = this.state.todos;
@@ -63,18 +72,34 @@ class App extends Component {
       <div className="App p-3">
         {/* pridat vyrenderovanie noveho komponentu AddTodo */}
         {/* do komponentu si musim pridat aj funkciu addTodo */}
-        <AddTodo onAdd={this.addTodo} />
-        {todos.map((todo, index) => {
-      
-          const handleFinishTodo =()=>{
-            todo.finished = true;
-            this.editTodo(todo, index);
-          };
+        <HashRouter>
+          <Navbar />
+          <Switch>
+            <Route
+              path="/add"
+              render={() => <AddTodo onAdd={this.addTodo} />}
+            />
+            <Route
+              path="/" exact render= {() => <TodoList onEdit={this.editTodo} onRemove={this.removeTodo} todos={todos} />}
+            />
 
-          return (
-            <Todo todo={todo} key={todo.id} onFinish={handleFinishTodo} />
-          )
-        })}
+            {/*   toto cele sa mi presunulo do noveho componentu TodoList
+            {todos.map((todo, index) => {
+
+              const handleFinishTodo = () => {
+                todo.finished = true;
+                this.editTodo(todo, index);
+              };
+
+              const handleRemoveTodo = () => this.removeTodo(index);
+
+              return (
+                <Todo todo={todo} key={todo.id} onFinish={handleFinishTodo} onRemove={handleRemoveTodo} />
+              )
+            })}*/}
+
+          </Switch>
+        </HashRouter>
       </div>
 
     );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Buttons from './Buttons';
-import axios from './axios';
+import axios from '../axios';
 
 
 class Todo extends Component {
@@ -12,6 +12,12 @@ class Todo extends Component {
         this.props.onFinish()
 
     };
+    // 
+    handleRemove = async () => {
+        await axios.delete('/todos/' + this.props.todo.id + '.json');
+        this.props.onRemove()
+    };
+
     render() {
         // robim dynamicky prvok cize todo aby sa mi vedelo menit preto si ho vytvorim ako konstantu s atrobutmi
         const { title, createdAt, text, finished } = this.props.todo;
@@ -40,7 +46,8 @@ class Todo extends Component {
 
                         }
                         <br />
-                        <Buttons todo={this.props.todo} onFinish={this.handleFinish} />
+                        {/* treba pridat buttons propku na onfinish a onremove */}
+                        <Buttons todo={this.props.todo} onFinish={this.handleFinish} onRemove={this.handleRemove} />
 
                     </div >
 
